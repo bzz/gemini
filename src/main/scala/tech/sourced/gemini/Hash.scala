@@ -7,6 +7,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.cassandra._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.storage.StorageLevel
 import org.slf4j.{Logger => Slf4jLogger}
 import tech.sourced.engine._
 import tech.sourced.featurext.SparkFEClient
@@ -43,8 +44,8 @@ class Hash(session: SparkSession, log: Slf4jLogger) {
   def forRepos(repos: DataFrame): HashResult = {
     val feSkippedFiles = mapAccumulator(session.sparkContext, "FE skipped files")
 
-    val files = filesForRepos(repos).cache()
-    val uasts = extractUast(files).cache()
+    val files = filesForRepos(repos).persist(StorageLevel.MEMORY_AND_DISK_SER)
+    val uasts = extractUast(files).persist(StorageLevel.MEMORY_AND_DISK_SER)
     val features = extractFeatures(uasts, feSkippedFiles).cache()
     report("Feature Extraction", features.count, feSkippedFiles)
 
