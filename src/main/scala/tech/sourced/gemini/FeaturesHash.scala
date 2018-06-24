@@ -3,7 +3,6 @@ package tech.sourced.gemini
 import tech.sourced.featurext.generated.service.Feature
 import tech.sourced.gemini.util.MathUtil
 
-import scala.collection.mutable
 import scala.collection.Searching._
 
 object FeaturesHash {
@@ -45,10 +44,10 @@ object FeaturesHash {
     * @param docFreq
     * @return
     */
-  private def toBagOfFeatures(features: Iterable[Feature], docFreq: OrderedDocFreq): Array[Double] = {
+  def toBagOfFeatures(features: Iterable[Feature], docFreq: OrderedDocFreq): Array[Double] = {
     val OrderedDocFreq(docs, tokens, df) = docFreq
 
-    val bag = new Array[Double](tokens.size)//mutable.ArrayBuffer.fill(tokens.size)(0.toDouble)
+    val bag = new Array[Double](tokens.size) //mutable.ArrayBuffer.fill(tokens.size)(0.toDouble)
     features.foreach { feature =>
       tokens.search(feature.name) match {
         case Found(idx) => {
