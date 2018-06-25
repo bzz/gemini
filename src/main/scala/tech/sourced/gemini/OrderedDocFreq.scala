@@ -1,8 +1,10 @@
 package tech.sourced.gemini
 
 import java.io.{File, PrintWriter}
-import scala.collection.immutable
 
+import tech.sourced.gemini.util.JSONUtils
+
+import scala.collection.immutable
 import scala.util.parsing.json.{JSONArray, JSONObject}
 
 /**

@@ -1,6 +1,7 @@
 package tech.sourced.gemini
 
 import tech.sourced.featurext.generated.service.Feature
+import tech.sourced.gemini.util.MathUtil
 
 import scala.collection.mutable
 import scala.collection.Searching._
