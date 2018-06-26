@@ -33,7 +33,7 @@ class SparkHashSpec extends FlatSpec
       super.filesForRepos(repos).filter(col("path").isin(filePaths: _*))
   }
   object LimitedHash {
-    def apply(s: SparkSession, log: Slf4jLogger) = new LimitedHash(s, log)
+    def apply(s: SparkSession, log: Slf4jLogger): LimitedHash = new LimitedHash(s, log)
   }
 
   override def beforeAll(): Unit = {
@@ -63,8 +63,8 @@ class SparkHashSpec extends FlatSpec
     // num of not-ignored files * num of repos
     hashes.count() shouldEqual 4
     // make sure rdd contains correct values
-    val row = hashes.collect().last
-    row.doc shouldEqual "github.com/src-d/borges.git//archiver_test.go@7558786958f6084188135b773f4457472a9e4052"
+    val rows = hashes.collect.map(_.doc)
+    rows should contain ("github.com/src-d/borges.git//archiver_test.go@7558786958f6084188135b773f4457472a9e4052")
   }
 
   "Hash" should "generate docFreq" in {
